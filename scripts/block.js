@@ -50,9 +50,11 @@ TET.BlockModule = (function(MainModule){
       this.locations.forEach(function(e){
         e.y += 1;
       });
+      return true;
     } else {
       _board.freezeBlock(this.locations);
       MainModule.addNewBlock();
+      return false;
     }
   };
 
@@ -69,7 +71,13 @@ TET.BlockModule = (function(MainModule){
     }
 
     return empty;
-  }
+  };
+
+  Block.prototype.moveDownFast = function(){
+    while (this.moveDown() === true) {
+      this.moveDown();
+    }
+  };
 
   return {
     Block: Block,

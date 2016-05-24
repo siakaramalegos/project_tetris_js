@@ -27,6 +27,7 @@ TET.MainModule = (function(){
     _renderCurrentBlock();
 
     // Set listeners
+    _listenKeyDown();
 
     // Start game loop
     _gameLoop = window.setInterval(_tic, 1000);
@@ -76,6 +77,27 @@ TET.MainModule = (function(){
       $('div[data-x="' + e.x + '"][data-y="' + e.y + '"]')
         .addClass('block');
     });
+  };
+
+  var _listenKeyDown = function(){
+    $(document).keydown(_processAction);
+  };
+
+  var _processAction = function(event){
+    event.preventDefault();
+
+    if ( event.keyCode === 40 ) {
+      // Down arrow = move piece all the way down
+      currentBlock.moveDownFast();
+    } else if ( event.keyCode === 39 ) {
+      // Right arrow = move piece one spot to the right
+    } else if ( event.keyCode === 37 ) {
+      // Left arrow = move piece one spot to the left
+
+    } else if ( event.keyCode === 32 ){
+      // Space bar = Rotate 90 degrees
+    }
+
   };
 
   // Return public methods
