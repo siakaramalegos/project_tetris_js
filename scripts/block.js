@@ -11,9 +11,9 @@ TET.BlockModule = (function(MainModule){
   }
 
   function _randomShape(){
-    // TODO: pick a random shape
-
-    return 'square1'
+    var shapes = ['square']//, 'bar', 'lRight', 'lLeft', 'sRight', 'sLeft'];
+    // var randomIndex = Math.floor(Math.random() * 5);
+    return shapes[0]
   }
 
   function _initialLocations(shape){
@@ -21,9 +21,18 @@ TET.BlockModule = (function(MainModule){
 
     // TODO: set up multiple shapes.
     var locationReference = {
-      square1: [
-        {x: randStart, y: 0}
-      ]
+      square: [
+        {x: randStart, y: 0},
+        {x: randStart + 1, y: 0},
+        {x: randStart, y: 1},
+        {x: randStart + 1, y: 1}
+      ]//,
+      // bar: [
+      //   {x: randStart, y: 0},
+      //   {x: randStart + 1, y: 0},
+      //   {x: randStart, y: 1},
+      //   {x: randStart + 1, y: 1}
+      // ]
     };
 
     return locationReference[shape];
