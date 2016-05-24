@@ -18,3 +18,7 @@ body {
 .block {
   background-color: rebeccapurple;
 }
+
+.cleared {
+  border: 1px solid green;
+}

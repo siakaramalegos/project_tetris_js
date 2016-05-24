@@ -4,6 +4,21 @@ var TET = TET || {};
 
 TET.BoardModule = (function(){
 
+  function _highlightRow(row){
+    $('div[data-y="' + row + '"]')
+      .addClass('cleared');
+  }
+
+  function _newRow(){
+    var row = [];
+
+    for (var j = 0; j < 10; j++ ){
+      row.push(0);
+    }
+
+    return row;
+  }
+
   // Constructor for new board
   function Board(){
     this.state = [];
@@ -12,11 +27,7 @@ TET.BoardModule = (function(){
 
   Board.prototype.init = function(){
     for (var i = 0; i < 20; i++ ){
-      var row = [];
-      for (var j = 0; j < 10; j++ ){
-        row.push(0);
-      }
-      this.state.push(row);
+      this.state.push(_newRow());
     }
   };
 
@@ -29,10 +40,15 @@ TET.BoardModule = (function(){
   };
 
   Board.prototype.clearRows = function(rows){
+    var board = this;
+
     rows.forEach(function(row){
-      _highlightRow();
+      // Highlight the completed row
+      _highlightRow(row);
       // Delete row
-      // Add a new empty row
+      board.state.splice(row, 1);
+      // Add a new empty row to top
+      board.state.unshift(_newRow());
     });
   };
 

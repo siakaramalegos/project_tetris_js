@@ -48,7 +48,7 @@ TET.BlockModule = (function(MainModule){
       _board.freezeBlock(this.locations);
       MainModule.addNewBlock();
       return false;
-    } else if ((!dirDown && this.openRightLeft()) ||
+    } else if ((!dirDown && this.openRightLeft(direction)) ||
       (dirDown && canMoveDown)) {
       this.moveBlock(direction);
       return true;
@@ -68,7 +68,7 @@ TET.BlockModule = (function(MainModule){
     });
   }
 
-  Block.prototype.openRightLeft = function(){
+  Block.prototype.openRightLeft = function(direction){
     var empty = true;
 
     for (var i = 0; i < this.locations.length; i++){
@@ -76,7 +76,8 @@ TET.BlockModule = (function(MainModule){
       var hitRight = e.x >= 9;
       var hitLeft = e.x <= 0;
       // Make sure the square isn't already at walls
-      if ( hitRight || hitLeft ){
+      if ( (direction === 'right' && hitRight) ||
+           (direction === 'left' && hitLeft) ){
         empty = false;
         console.log('hit wall');
         break
