@@ -22,3 +22,7 @@ body {
 .cleared {
   border: 1px solid green;
 }
+
+.game-over {
+  color: red;
+}

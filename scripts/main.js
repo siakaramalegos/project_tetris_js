@@ -51,6 +51,10 @@ TET.MainModule = (function(){
     _checkClearedRow();
 
     // Check game over
+    if (_checkGameOver()){
+      window.clearInterval(_gameLoop);
+      _renderGameOver();
+    }
   };
 
   var _renderBoard = function(){
@@ -127,6 +131,30 @@ TET.MainModule = (function(){
       }, 500)
     }
   };
+
+  var _checkGameOver = function(){
+    var gameOver = false;
+
+    for (var row = 0; row < 4; row++){
+      for (var col = 0; col < 10; col++){
+        if (board.state[row][col] === 1){
+          gameOver = true;
+          break
+        }
+      }
+      if (gameOver){ break }
+    }
+
+    return gameOver;
+  };
+
+  var _renderGameOver = function(){
+    $h3 = $('<h3></h3>')
+      .text('Game Over! Refresh to play again.')
+      .attr('class', 'game-over');
+
+    $('header').append($h3);
+  }
 
   // Return public methods
   return stub;

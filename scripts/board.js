@@ -33,7 +33,6 @@ TET.BoardModule = (function(){
 
   Board.prototype.freezeBlock = function(squares){
     var board = this;
-    console.log('freezing block');
     squares.forEach(function(e){
       board.state[e.y][e.x] = 1;
     });

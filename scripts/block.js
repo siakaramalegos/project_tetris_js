@@ -138,11 +138,9 @@ TET.BlockModule = (function(MainModule){
       // Make sure that we are not at the bottom or that square below is empty
       if ( e.y >= 23 ){
         empty = false;
-        console.log('hit something');
         break
       } else if (_board.state[e.y + 1][e.x] !== 0) {
         empty = false;
-        console.log('hit something');
         break
       }
     };
