@@ -36,7 +36,6 @@ TET.MainModule = (function(){
   };
 
   stub.addNewBlock = function(){
-    console.log('Adding new block');
     currentBlock = new TET.BlockModule.Block();
   }
 

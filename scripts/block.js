@@ -11,28 +11,57 @@ TET.BlockModule = (function(MainModule){
   }
 
   function _randomShape(){
-    var shapes = ['square']//, 'bar', 'lRight', 'lLeft', 'sRight', 'sLeft'];
-    // var randomIndex = Math.floor(Math.random() * 5);
-    return shapes[0]
+    var shapes = ['square', 'bar', 'lRight', 'lLeft', 'sRight', 'sLeft'];
+    var randomIndex = Math.floor(Math.random() * 5);
+    return shapes[randomIndex];
   }
 
   function _initialLocations(shape){
-    var randStart = Math.floor(Math.random() * 10);
+    var randStart;
 
-    // TODO: set up multiple shapes.
+    if (shape === 'bar') {
+      randStart = Math.floor(Math.random() * 10);
+    } else {
+      randStart = Math.floor(Math.random() * 9);
+    }
+
     var locationReference = {
       square: [
         {x: randStart, y: 2},
         {x: randStart + 1, y: 2},
         {x: randStart, y: 3},
         {x: randStart + 1, y: 3}
-      ]//,
-      // bar: [
-      //   {x: randStart, y: 0},
-      //   {x: randStart + 1, y: 0},
-      //   {x: randStart, y: 1},
-      //   {x: randStart + 1, y: 1}
-      // ]
+      ],
+      bar: [
+        {x: randStart, y: 0},
+        {x: randStart, y: 1},
+        {x: randStart, y: 2},
+        {x: randStart, y: 3}
+      ],
+      lRight: [
+        {x: randStart, y: 1},
+        {x: randStart, y: 2},
+        {x: randStart, y: 3},
+        {x: randStart + 1, y: 3}
+      ],
+      lLeft: [
+        {x: randStart + 1, y: 1},
+        {x: randStart + 1, y: 2},
+        {x: randStart + 1, y: 3},
+        {x: randStart, y: 3}
+      ],
+      sRight: [
+        {x: randStart, y: 2},
+        {x: randStart, y: 1},
+        {x: randStart + 1, y: 1},
+        {x: randStart + 1, y: 0}
+      ],
+      sLeft: [
+        {x: randStart + 1, y: 2},
+        {x: randStart + 1, y: 1},
+        {x: randStart, y: 1},
+        {x: randStart, y: 0}
+      ]
     };
 
     return locationReference[shape];
@@ -45,6 +74,7 @@ TET.BlockModule = (function(MainModule){
 
   Block.prototype.init = function(){
     var shape = _randomShape();
+    console.log('adding new ' + shape + ' block');
     this.locations = _initialLocations(shape);
     this.setRotationCenter(shape);
   };
