@@ -49,7 +49,7 @@ TET.BlockModule = (function(MainModule){
 
     var newLocation = directionReference[direction];
 
-    if (this.checkOpenBelow() === true){
+    if (this.checkOpenNext(newLocation) === true){
       this.locations.forEach(function(e){
         e.x += newLocation.x;
         e.y += newLocation.y;
@@ -62,13 +62,17 @@ TET.BlockModule = (function(MainModule){
     }
   };
 
-  Block.prototype.checkOpenBelow = function(){
+  Block.prototype.checkOpenNext = function(newLocation){
     var empty = true;
 
     for (var i = 0; i < this.locations.length; i++){
       var e = this.locations[i];
+      var hitOccupied = _board.state[e.x + newLocation.x][e.y + newLocation.y] !== 0;
+      var hitBottom = e.y >= _board.state[0].length;
+      var hitRight = e.x >= _board.state.length;
+      var hitLeft = e.x < 0;
       // Make sure the square below is empty or that we are not at the bottom
-      if ( _board.state[e.x][e.y + 1] !== 0 || e.y >= _board.state[0].length ){
+      if ( hitOccupied || hitBottom || hitRight || hitLeft ){
         empty = false;
         break
       }

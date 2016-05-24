@@ -91,9 +91,10 @@ TET.MainModule = (function(){
       currentBlock.moveDownFast();
     } else if ( event.keyCode === 39 ) {
       // Right arrow = move piece one spot to the right
+      currentBlock.move('right');
     } else if ( event.keyCode === 37 ) {
       // Left arrow = move piece one spot to the left
-
+      currentBlock.move('left');
     } else if ( event.keyCode === 32 ){
       // Space bar = Rotate 90 degrees
     }
