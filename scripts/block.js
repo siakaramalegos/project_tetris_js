@@ -41,42 +41,67 @@ TET.BlockModule = (function(MainModule){
   };
 
   Block.prototype.move = function(direction){
-    var directionReference = {
-      down: {x: 0, y: 1},
-      right: {x: 1, y: 0},
-      left: {x: -1, y: 0}
-    }
+    var canMoveDown = this.openDown();
+    var dirDown = direction === 'down'
 
-    var newLocation = directionReference[direction];
-
-    if (this.checkOpenNext(newLocation) === true){
-      this.locations.forEach(function(e){
-        e.x += newLocation.x;
-        e.y += newLocation.y;
-      });
-      return true;
-    } else {
+    if ( direction === 'down' && !canMoveDown ){
       _board.freezeBlock(this.locations);
       MainModule.addNewBlock();
       return false;
+    } else if ((!dirDown && this.openRightLeft()) ||
+      (dirDown && canMoveDown)) {
+      this.moveBlock(direction);
+      return true;
     }
   };
 
-  Block.prototype.checkOpenNext = function(newLocation){
+  Block.prototype.moveBlock = function(direction){
+    var newLocation = {
+      down: {x: 0, y: 1},
+      right: {x: 1, y: 0},
+      left: {x: -1, y: 0}
+    }[direction];
+
+    this.locations.forEach(function(e){
+      e.x += newLocation.x;
+      e.y += newLocation.y;
+    });
+  }
+
+  Block.prototype.openRightLeft = function(){
     var empty = true;
 
     for (var i = 0; i < this.locations.length; i++){
       var e = this.locations[i];
-      var hitOccupied = _board.state[e.x + newLocation.x][e.y + newLocation.y] !== 0;
-      var hitBottom = e.y >= _board.state[0].length;
-      var hitRight = e.x >= _board.state.length;
-      var hitLeft = e.x < 0;
-      // Make sure the square below is empty or that we are not at the bottom
-      if ( hitOccupied || hitBottom || hitRight || hitLeft ){
+      var hitRight = e.x >= 9;
+      var hitLeft = e.x <= 0;
+      // Make sure the square isn't already at walls
+      if ( hitRight || hitLeft ){
         empty = false;
+        console.log('hit wall');
         break
       }
-    }
+    };
+
+    return empty;
+  };
+
+  Block.prototype.openDown = function(){
+    var empty = true;
+
+    for (var i = 0; i < this.locations.length; i++){
+      var e = this.locations[i];
+      // Make sure that we are not at the bottom or that square below is empty
+      if ( e.y >= 19 ){
+        empty = false;
+        console.log('hit something');
+        break
+      } else if (_board.state[e.y + 1][e.x] !== 0) {
+        empty = false;
+        console.log('hit something');
+        break
+      }
+    };
 
     return empty;
   };

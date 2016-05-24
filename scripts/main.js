@@ -8,8 +8,6 @@ TET.MainModule = (function(){
   // Stub for returned object (public methods)
   var stub = {};
 
-  var _rows = 20;
-  var _columns = 10;
   var _gameLoop,
       currentBlock,
       board;
@@ -18,7 +16,7 @@ TET.MainModule = (function(){
     console.log('Initializing main game module');
 
     // Initialize game objects
-    board = new TET.BoardModule.Board(_rows, _columns);
+    board = new TET.BoardModule.Board();
     TET.BlockModule.init()
     stub.addNewBlock();
 
@@ -38,6 +36,7 @@ TET.MainModule = (function(){
   };
 
   stub.addNewBlock = function(){
+    console.log('Adding new block');
     currentBlock = new TET.BlockModule.Block();
   }
 
@@ -49,20 +48,23 @@ TET.MainModule = (function(){
     _renderBoard();
     _renderCurrentBlock();
 
+    // Check for a cleared row
+    _checkClearedRow();
+
     // Check game over
   };
 
   var _renderBoard = function(){
     $('#game-board').html('');
 
-    for (var row = 0; row < _rows; row++) {
-      for (var col = 0; col < _columns; col++) {
+    for (var row = 0; row < 20; row++) {
+      for (var col = 0; col < 10; col++) {
         var $square = $('<div></div>')
           .attr('class', 'grid-box')
           .attr('data-x', col)
           .attr('data-y', row);
 
-        if ( board.state[col][row] === 1 ){
+        if ( board.state[row][col] === 1 ){
           $square.addClass('block');
         }
 
@@ -98,7 +100,33 @@ TET.MainModule = (function(){
     } else if ( event.keyCode === 32 ){
       // Space bar = Rotate 90 degrees
     }
+  };
 
+  var _checkClearedRow = function(){
+    var clearedRows = [];
+
+    for (var row = 0; row < 20; row++) {
+      var cleared = true;
+
+      for (var col = 0; col < 10; col++) {
+        if (board.state[row][col] === 0){
+          cleared = false;
+        }
+      }
+
+      if (cleared) { clearedRows.push(row) }
+    }
+
+    if (clearedRows.length > 0){
+      // make them green in the view then delete
+      board.clearRows(clearedRows);
+
+      // re-render after a short timeout
+      window.setTimeout(function(){
+        _renderBoard();
+        _renderCurrentBlock();
+      }, 500)
+    }
   };
 
   // Return public methods
