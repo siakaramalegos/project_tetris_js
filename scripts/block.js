@@ -6,15 +6,6 @@ TET.BlockModule = (function(MainModule){
 
   var _board;
 
-  // TODO: fill in for other shapes
-  var _rotationCenters = function(block) {
-    var centerReference = {
-      square: {x: block.locations[0].x, y: 0}
-    };
-
-    return centerReference[block.shape];
-  };
-
   function init(){
     _board = MainModule.getBoard();
   }
@@ -26,17 +17,16 @@ TET.BlockModule = (function(MainModule){
   }
 
   function _initialLocations(shape){
-    var locations;
     var randStart = Math.floor(Math.random() * 10);
 
-    // TODO: set up multiple shapes
-    if ( shape === 'square1' ){
-      locations = [
+    // TODO: set up multiple shapes.
+    var locationReference = {
+      square1: [
         {x: randStart, y: 0}
-      ];
-    }
+      ]
+    };
 
-    return locations;
+    return locationReference[shape];
   }
 
   // Constructor for new block
@@ -47,7 +37,7 @@ TET.BlockModule = (function(MainModule){
   Block.prototype.init = function(){
     var shape = _randomShape();
     this.locations = _initialLocations(shape);
-    this.rotationCenter = _rotationCenters(this);
+    this.setRotationCenter(shape);
   };
 
   Block.prototype.moveDown = function(){
@@ -82,6 +72,16 @@ TET.BlockModule = (function(MainModule){
     while (this.moveDown() === true) {
       this.moveDown();
     }
+  };
+
+  // TODO: fill in for other shapes. Increment rotation center with each move
+  Block.prototype.setRotationCenter = function(shape) {
+    console.log(this);
+    var centerReference = {
+      square1: this.locations[0]
+    };
+
+    this.rotationCenter = centerReference[shape];
   };
 
   return {
