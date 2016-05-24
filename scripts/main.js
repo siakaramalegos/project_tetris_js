@@ -10,14 +10,17 @@ TET.MainModule = (function(){
 
   var _rows = 20;
   var _columns = 10;
-  var _board = [];
   var _gameLoop,
-      _currentBlock;
+      currentBlock,
+      board;
 
   stub.init = function(){
+    console.log('Initializing main game module');
+
     // Initialize game objects
-    _initBoard();
-    _currentBlock = new TET.BlockModule.Block();
+    board = new TET.BoardModule.Board(_rows, _columns);
+    TET.BlockModule.init()
+    stub.addNewBlock();
 
     // Show first rendering
     _renderBoard();
@@ -26,22 +29,20 @@ TET.MainModule = (function(){
     // Set listeners
 
     // Start game loop
-    _gameLoop = window.setInterval(_tic, 2000);
+    _gameLoop = window.setInterval(_tic, 1000);
   };
 
-  var _initBoard = function(){
-    for (var i = 0; i < _columns; i++ ){
-      var row = [];
-      for (var j = 0; j < _rows; j++ ){
-        row.push(0);
-      }
-      _board.push(row);
-    }
+  stub.getBoard = function(){
+    return board;
   };
+
+  stub.addNewBlock = function(){
+    currentBlock = new TET.BlockModule.Block();
+  }
 
   var _tic = function(){
     // Move block
-    _currentBlock.moveDown();
+    currentBlock.moveDown();
 
     // Render objects
     _renderBoard();
@@ -60,6 +61,10 @@ TET.MainModule = (function(){
           .attr('data-x', col)
           .attr('data-y', row);
 
+        if ( board.state[col][row] === 1 ){
+          $square.addClass('block');
+        }
+
         $('#game-board').append($square);
       }
       $('#game-board').append('<br>');
@@ -67,7 +72,7 @@ TET.MainModule = (function(){
   };
 
   var _renderCurrentBlock = function(){
-    _currentBlock.locations.forEach(function(e){
+    currentBlock.locations.forEach(function(e){
       $('div[data-x="' + e.x + '"][data-y="' + e.y + '"]')
         .addClass('block');
     });
