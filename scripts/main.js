@@ -11,12 +11,17 @@ TET.MainModule = (function(){
   var _rows = 20;
   var _columns = 10;
   var _board = [];
-  var _gameLoop;
+  var _gameLoop,
+      _currentBlock;
 
   stub.init = function(){
     // Initialize game objects
     _initBoard();
+    _currentBlock = new TET.BlockModule.Block();
+
+    // Show first rendering
     _renderBoard();
+    _renderCurrentBlock();
 
     // Set listeners
 
@@ -35,8 +40,12 @@ TET.MainModule = (function(){
   };
 
   var _tic = function(){
+    // Move block
+    _currentBlock.moveDown();
+
     // Render objects
     _renderBoard();
+    _renderCurrentBlock();
 
     // Check game over
   };
@@ -47,12 +56,21 @@ TET.MainModule = (function(){
     for (var row = 0; row < _rows; row++) {
       for (var col = 0; col < _columns; col++) {
         var $square = $('<div></div>')
-          .attr('class', 'grid-box');
+          .attr('class', 'grid-box')
+          .attr('data-x', col)
+          .attr('data-y', row);
 
         $('#game-board').append($square);
       }
       $('#game-board').append('<br>');
     }
+  };
+
+  var _renderCurrentBlock = function(){
+    _currentBlock.locations.forEach(function(e){
+      $('div[data-x="' + e.x + '"][data-y="' + e.y + '"]')
+        .addClass('block');
+    });
   };
 
   // Return public methods
