@@ -43,7 +43,7 @@ TET.MainModule = (function(){
 
   var _tic = function(){
     // Move block
-    currentBlock.moveDown();
+    currentBlock.move('down');
 
     // Render objects
     _renderBoard();

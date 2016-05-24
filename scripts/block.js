@@ -40,10 +40,19 @@ TET.BlockModule = (function(MainModule){
     this.setRotationCenter(shape);
   };
 
-  Block.prototype.moveDown = function(){
+  Block.prototype.move = function(direction){
+    var directionReference = {
+      down: {x: 0, y: 1},
+      right: {x: 1, y: 0},
+      left: {x: -1, y: 0}
+    }
+
+    var newLocation = directionReference[direction];
+
     if (this.checkOpenBelow() === true){
       this.locations.forEach(function(e){
-        e.y += 1;
+        e.x += newLocation.x;
+        e.y += newLocation.y;
       });
       return true;
     } else {
@@ -69,14 +78,13 @@ TET.BlockModule = (function(MainModule){
   };
 
   Block.prototype.moveDownFast = function(){
-    while (this.moveDown() === true) {
-      this.moveDown();
+    while (this.move('down') === true) {
+      this.move('down');
     }
   };
 
   // TODO: fill in for other shapes. Increment rotation center with each move
   Block.prototype.setRotationCenter = function(shape) {
-    console.log(this);
     var centerReference = {
       square1: this.locations[0]
     };
