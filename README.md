@@ -11,3 +11,5 @@ Just like traditional Tetris, your goal is place blocks to clear as many rows as
 - **Right arrow**: move the current piece one block to the right
 - **Left arrow**: move the current piece one block to the left
 - **Space bar**: (coming soon) rotate the piece
+
+You can access the game [here](http://siakaramalegos.github.io/project_tetris_js/).
