@@ -7,8 +7,12 @@ TET.BlockModule = (function(MainModule){
   var _board;
 
   // TODO: fill in for other shapes
-  var _rotationCenters = {
-    square: {x: 5, y: 0}
+  var _rotationCenters = function(block) {
+    var centerReference = {
+      square: {x: block.locations[0].x, y: 0}
+    };
+
+    return centerReference[block.shape];
   };
 
   function init(){
@@ -23,11 +27,12 @@ TET.BlockModule = (function(MainModule){
 
   function _initialLocations(shape){
     var locations;
+    var randStart = Math.floor(Math.random() * 10);
 
     // TODO: set up multiple shapes
     if ( shape === 'square1' ){
       locations = [
-        {x: 5, y: 0}
+        {x: randStart, y: 0}
       ];
     }
 
@@ -42,7 +47,7 @@ TET.BlockModule = (function(MainModule){
   Block.prototype.init = function(){
     var shape = _randomShape();
     this.locations = _initialLocations(shape);
-    this.rotationCenter = _rotationCenters[shape];
+    this.rotationCenter = _rotationCenters(this);
   };
 
   Block.prototype.moveDown = function(){
