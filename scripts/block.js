@@ -22,10 +22,10 @@ TET.BlockModule = (function(MainModule){
     // TODO: set up multiple shapes.
     var locationReference = {
       square: [
-        {x: randStart, y: 0},
-        {x: randStart + 1, y: 0},
-        {x: randStart, y: 1},
-        {x: randStart + 1, y: 1}
+        {x: randStart, y: 2},
+        {x: randStart + 1, y: 2},
+        {x: randStart, y: 3},
+        {x: randStart + 1, y: 3}
       ]//,
       // bar: [
       //   {x: randStart, y: 0},
@@ -77,16 +77,20 @@ TET.BlockModule = (function(MainModule){
     });
   }
 
-  Block.prototype.openRightLeft = function(direction){
+  Block.prototype.openRightLeft = function(dir){
     var empty = true;
 
     for (var i = 0; i < this.locations.length; i++){
       var e = this.locations[i];
-      var hitRight = e.x >= 9;
-      var hitLeft = e.x <= 0;
       // Make sure the square isn't already at walls
-      if ( (direction === 'right' && hitRight) ||
-           (direction === 'left' && hitLeft) ){
+      if ( (dir === 'right' && e.x >= 9) ||
+           (dir === 'left' && e.x <= 0) ){
+        empty = false;
+        console.log('hit wall');
+        break
+      } else if (
+        (dir === 'right') && (_board.state[e.y][e.x + 1] !== 0) ||
+        (dir === 'left') && (_board.state[e.y][e.x - 1] !== 0) ){
         empty = false;
         console.log('hit wall');
         break
@@ -102,7 +106,7 @@ TET.BlockModule = (function(MainModule){
     for (var i = 0; i < this.locations.length; i++){
       var e = this.locations[i];
       // Make sure that we are not at the bottom or that square below is empty
-      if ( e.y >= 19 ){
+      if ( e.y >= 23 ){
         empty = false;
         console.log('hit something');
         break

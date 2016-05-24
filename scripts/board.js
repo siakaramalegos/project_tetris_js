@@ -26,7 +26,7 @@ TET.BoardModule = (function(){
   }
 
   Board.prototype.init = function(){
-    for (var i = 0; i < 20; i++ ){
+    for (var i = 0; i < 24; i++ ){
       this.state.push(_newRow());
     }
   };

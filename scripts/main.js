@@ -57,7 +57,7 @@ TET.MainModule = (function(){
   var _renderBoard = function(){
     $('#game-board').html('');
 
-    for (var row = 0; row < 20; row++) {
+    for (var row = 4; row < 24; row++) {
       for (var col = 0; col < 10; col++) {
         var $square = $('<div></div>')
           .attr('class', 'grid-box')
@@ -105,7 +105,7 @@ TET.MainModule = (function(){
   var _checkClearedRow = function(){
     var clearedRows = [];
 
-    for (var row = 0; row < 20; row++) {
+    for (var row = 4; row < 24; row++) {
       var cleared = true;
 
       for (var col = 0; col < 10; col++) {
