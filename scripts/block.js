@@ -12,7 +12,7 @@ TET.BlockModule = (function(MainModule){
 
   function _randomShape(){
     var shapes = ['square', 'bar', 'lRight', 'lLeft', 'sRight', 'sLeft'];
-    var randomIndex = Math.floor(Math.random() * 5);
+    var randomIndex = Math.floor(Math.random() * 6);
     return shapes[randomIndex];
   }
 
@@ -67,6 +67,24 @@ TET.BlockModule = (function(MainModule){
     return locationReference[shape];
   }
 
+  function _checkEmpty(newLocs){
+    var empty = true;
+
+    for (var i = 0; i < newLocs.length; i++){
+      // Check if off the board
+      if (newLocs[i].x > 9 || newLocs[i].x < 0 || newLocs[i].y > 24){
+        empty = false;
+        break
+      // Check if block already there
+      } else if (_board.state[newLocs[i].y][newLocs[i].y] === 1) {
+        empty = false;
+        break
+      }
+    }
+
+    return empty;
+  }
+
   // Constructor for new block
   function Block(){
     this.init();
@@ -74,9 +92,10 @@ TET.BlockModule = (function(MainModule){
 
   Block.prototype.init = function(){
     var shape = _randomShape();
+    this.shape = shape;
+    this.rotation = 0;
     console.log('adding new ' + shape + ' block');
     this.locations = _initialLocations(shape);
-    this.setRotationCenter(shape);
   };
 
   Block.prototype.move = function(direction){
@@ -154,18 +173,89 @@ TET.BlockModule = (function(MainModule){
     }
   };
 
-  // TODO: fill in for other shapes. Increment rotation center with each move
-  Block.prototype.setRotationCenter = function(shape) {
-    var centerReference = {
-      square1: this.locations[0]
-    };
+  Block.prototype.rotate = function(){
+    // Don't use computer to process a square
+    if (this.shape !== 'square'){
+      console.log('Trying to rotate...')
+      var newLocations;
 
-    this.rotationCenter = centerReference[shape];
+      if (this.shape === 'sRight' || this.shape === 'sLeft'){
+        if (this.rotation === 0 || this.rotation === 180){
+          newLocations = [
+            {x: this.locations[0].x - 1, y: this.locations[0].y - 1},
+            this.locations[1],
+            {x: this.locations[2].x - 1, y: this.locations[2].y + 1},
+            {x: this.locations[3].x, y: this.locations[3].y + 2}
+          ];
+        } else {
+          newLocations = [
+            {x: this.locations[0].x + 1, y: this.locations[0].y + 1},
+            this.locations[1],
+            {x: this.locations[2].x + 1, y: this.locations[2].y - 1},
+            {x: this.locations[3].x, y: this.locations[3].y - 2}
+          ];
+        }
+      } else if (this.shape === 'bar'){
+        if (this.rotation === 0 || this.rotation === 180){
+          newLocations = [
+            {x: this.locations[0].x + 1, y: this.locations[0].y + 2},
+            {x: this.locations[1].x, y: this.locations[1].y + 1},
+            {x: this.locations[2].x - 1, y: this.locations[2].y},
+            {x: this.locations[3].x - 2, y: this.locations[3].y - 1}
+          ];
+        } else {
+          newLocations = [
+            {x: this.locations[0].x - 1, y: this.locations[0].y - 2},
+            {x: this.locations[1].x, y: this.locations[1].y - 1},
+            {x: this.locations[2].x + 1, y: this.locations[2].y},
+            {x: this.locations[3].x + 2, y: this.locations[3].y + 1}
+          ];
+        }
+      } else if (this.shape === 'lLeft' || this.shape === 'lRight'){
+        if (this.rotation === 0) {
+          newLocations = [
+            {x: this.locations[0].x + 1, y: this.locations[0].y + 2},
+            {x: this.locations[1].x, y: this.locations[1].y + 1},
+            {x: this.locations[2].x - 1, y: this.locations[2].y},
+            {x: this.locations[3].x, y: this.locations[3].y - 1}
+          ];
+        } else if (this.rotation === 90){
+          newLocations = [
+            {x: this.locations[0].x - 2, y: this.locations[0].y + 1},
+            {x: this.locations[1].x - 1, y: this.locations[1].y},
+            {x: this.locations[2].x, y: this.locations[2].y - 1},
+            {x: this.locations[3].x + 1, y: this.locations[3].y}
+          ];
+        } else if (this.rotation === 180){
+          newLocations = [
+            {x: this.locations[0].x - 1, y: this.locations[0].y - 2},
+            {x: this.locations[1].x, y: this.locations[1].y - 1},
+            {x: this.locations[2].x + 1, y: this.locations[2].y},
+            {x: this.locations[3].x, y: this.locations[3].y + 1}
+          ];
+        } else {
+          newLocations = [
+            {x: this.locations[0].x + 2, y: this.locations[0].y - 1},
+            {x: this.locations[1].x + 1, y: this.locations[1].y},
+            {x: this.locations[2].x, y: this.locations[2].y + 1},
+            {x: this.locations[3].x - 1, y: this.locations[3].y}
+          ];
+        }
+      }
+
+
+      // Check empty future location
+      if (_checkEmpty(newLocations)) {
+        console.log('...successfully rotating.')
+        this.locations = newLocations;
+        this.rotation = (this.rotation + 90) % 360;
+      }
+    }
   };
 
   return {
     Block: Block,
     init: init
-  }
+  };
 
 })(TET.MainModule);

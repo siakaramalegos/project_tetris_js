@@ -102,6 +102,7 @@ TET.MainModule = (function(){
       currentBlock.move('left');
     } else if ( event.keyCode === 32 ){
       // Space bar = Rotate 90 degrees
+      currentBlock.rotate();
     }
   };
 
