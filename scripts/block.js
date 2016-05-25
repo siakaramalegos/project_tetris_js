@@ -211,7 +211,7 @@ TET.BlockModule = (function(MainModule){
             {x: this.locations[3].x + 2, y: this.locations[3].y + 1}
           ];
         }
-      } else if (this.shape === 'lLeft' || this.shape === 'lRight'){
+      } else if (this.shape === 'lLeft'){
         if (this.rotation === 0) {
           newLocations = [
             {x: this.locations[0].x + 1, y: this.locations[0].y + 2},
@@ -239,6 +239,36 @@ TET.BlockModule = (function(MainModule){
             {x: this.locations[1].x + 1, y: this.locations[1].y},
             {x: this.locations[2].x, y: this.locations[2].y + 1},
             {x: this.locations[3].x - 1, y: this.locations[3].y}
+          ];
+        }
+      } else if (this.shape === 'lRight'){
+        if (this.rotation === 0) {
+          newLocations = [
+            {x: this.locations[0].x + 2, y: this.locations[0].y + 1},
+            {x: this.locations[1].x + 1, y: this.locations[1].y},
+            {x: this.locations[2].x, y: this.locations[2].y - 1},
+            {x: this.locations[3].x - 1, y: this.locations[3].y}
+          ];
+        } else if (this.rotation === 90){
+          newLocations = [
+            {x: this.locations[0].x - 1, y: this.locations[0].y + 2},
+            {x: this.locations[1].x, y: this.locations[1].y + 1},
+            {x: this.locations[2].x + 1, y: this.locations[2].y},
+            {x: this.locations[3].x, y: this.locations[3].y - 1}
+          ];
+        } else if (this.rotation === 180){
+          newLocations = [
+            {x: this.locations[0].x - 2, y: this.locations[0].y - 1},
+            {x: this.locations[1].x - 1, y: this.locations[1].y},
+            {x: this.locations[2].x, y: this.locations[2].y + 1},
+            {x: this.locations[3].x + 1, y: this.locations[3].y}
+          ];
+        } else {
+          newLocations = [
+            {x: this.locations[0].x + 1, y: this.locations[0].y - 2},
+            {x: this.locations[1].x, y: this.locations[1].y - 1},
+            {x: this.locations[2].x - 1, y: this.locations[2].y},
+            {x: this.locations[3].x, y: this.locations[3].y + 1}
           ];
         }
       }
